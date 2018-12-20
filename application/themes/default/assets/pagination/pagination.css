@@ -42,7 +42,7 @@
 	border: 1px solid #AAE;
 }
 
-.pagination .current.prev, .pagination .current.next{
+.pagination .current.prev, .pagination .current.next, .pagination .current.first, .pagination .current.last{
 	color:#999;
 	border-color:#999;
 	background:#fff;

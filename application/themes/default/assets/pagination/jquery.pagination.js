@@ -9,16 +9,20 @@
  */
 jQuery.fn.pagination = function(maxentries, opts){
 	opts = jQuery.extend({
-		items_per_page:10,
-		num_display_entries:10,
+		items_per_page:1,//每页显示1项
+		num_display_entries:4,//主体页数
 		current_page:0,
-		num_edge_entries:0,
-		link_to:"#",
-		prev_text:"Prev",
-		next_text:"Next",
+		num_edge_entries:1,//边缘页数
+		link_to:"javascript:void(0);",
+		prev_text:"上一页",
+		next_text:"下一页",
+		first:"首页",
+		last:"尾页",
 		ellipse_text:"...",
 		prev_show_always:true,
 		next_show_always:true,
+		first_show_always:true,
+		last_show_always:true,
 		callback:function(){return false;}
 	},opts||{});
 	
@@ -86,6 +90,12 @@ jQuery.fn.pagination = function(maxentries, opts){
 				if(appendopts.classes){lnk.addClass(appendopts.classes);}
 				panel.append(lnk);
 			}
+
+			// 产生 "first"-链接
+			if(opts.first && opts.first_show_always){
+				appendItem(0,{text:opts.first, classes:"first"});
+			}
+
 			// 产生"Previous"-链接
 			if(opts.prev_text && (current_page > 0 || opts.prev_show_always)){
 				appendItem(current_page-1,{text:opts.prev_text, classes:"prev"});
@@ -122,6 +132,11 @@ jQuery.fn.pagination = function(maxentries, opts){
 			// 产生 "Next"-链接
 			if(opts.next_text && (current_page < np-1 || opts.next_show_always)){
 				appendItem(current_page+1,{text:opts.next_text, classes:"next"});
+			}
+			
+			// 产生 "last"-链接
+			if(opts.last && opts.last_show_always){
+				appendItem(np,{text:opts.last, classes:"last"});
 			}
 		}
 		

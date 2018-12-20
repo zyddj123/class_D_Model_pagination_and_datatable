@@ -51,27 +51,29 @@ class UserController extends CO_Controller
 
     public function ajax_pagination_data()
     {
-        $user = new User($this->getDb());
-        $name = $this->input->post('name');
+        $user = new User($this->getDb());   //继承D_Model基类的子类对象
+        $name = $this->input->post('name'); //要搜索的字符串
         if($this->input->post('p')){
             $p=$this->input->post('p');// 当前页码数 默认第1页
         }else{
             $p=1;
         }
         $ppc=10;// 每页显示多少条
-        $start=($p-1)*$ppc;  //第几条开始查询
-        $arrRet=array();
+        $arrRet=array(); //返回给前台ajax的数组
 
-        $param['select'] = array('student.*','class_name','sex');
-        $param['page'] = $p;
-        $param['order'] = array('student.id'=>'ASC');
-        $param['search'] = array('name'=>$name);
-        $param['ppc'] = $ppc;
-        // $param['where'] = array('student.status'=>1);
-        $param['join'] = array('class'=>array('student.class_id','class.id'),'sex'=>array('student.sex_id','sex.id'));
+        $data['select'] = array('student.id','name','class_id','student.status','class_name','sex');
+        $data['order'] = array('student.id'=>'ASC');
+        $data['where']['and'] = array('student.status'=>1,'class_id'=>array(1,2));
+        $data['where']['or'] = array('student.id','name');
+        // $data['where']['or2'] = array('mm'=>1,'nn'=>array(1,2));
+        $data['search'] = $name;
+        $data['page'] = $p;
+        $data['ppc'] = $ppc;
+        $data['join'] = array('class'=>array('student.class_id','class.id'),'sex'=>array('student.sex_id','sex.id'));
 
-        $data = $user->pagination($param);
+        $data = $user->pagination($data);
         $count = $data['data']['count'];
+        // var_dump($data);die;
         $arrRet['data']=$data['data']['data'];//数据
         $arrRet['p']=$p;//当前页
         $arrRet['ppc']=$ppc;    //每页显示数
