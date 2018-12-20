@@ -1,0 +1,5 @@
+/cache
+/log
+/.vscode
+/application/APP_LOG_PATH
+*.log
